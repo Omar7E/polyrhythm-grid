@@ -17,7 +17,7 @@ const head = `<!doctype html>
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
 `;
-const sw = `<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>`;
+const sw = `<script>if ('serviceWorker' in navigator) { const had = !!navigator.serviceWorker.controller; navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(r => r.update()); navigator.serviceWorker.addEventListener('controllerchange', () => { if (had) location.reload(); }); }</script>`;
 // Move the page's <title>/<link>/<style> into <head>, the rest into <body>.
 const split = body.indexOf('</style>') + '</style>'.length;
 const html = head + body.slice(0, split) + '\n</head>\n<body>\n' + body.slice(split) + '\n' + sw + '\n</body>\n</html>\n';
